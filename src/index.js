@@ -3,9 +3,12 @@ const app = express();
 const path = require("path");
 const morgan = require("morgan");
 const handlebars = require("express-handlebars");
+const route = require("./routes/index");
 const port = 3000;
 
 app.use(express.static(path.join(__dirname, "public")));
+app.use(express.urlencoded());
+app.use(express.json());
 
 // HTTP response logger
 app.use(morgan("combined"));
@@ -19,13 +22,7 @@ app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "resources/views"));
 
 // Routing
-app.get("/home", (req, res) => {
-  res.render("home");
-});
-
-app.get("/news", (req, res) => {
-  res.render("news");
-})
+route(app);
 
 // Start server
 app.listen(port, () => {
